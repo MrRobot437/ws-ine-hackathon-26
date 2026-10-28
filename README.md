@@ -39,24 +39,6 @@ Los *no especificados* (cuadernillo no disponible) no entran en el cálculo. Los
 
 28/10/2026
 
-## To do
-
-### End points
-
-La app no expone una API; sus "puntos de entrada" son las vistas de Streamlit, controladas con `st.session_state["vista"]`:
-
-| Vista | Estado | Descripción |
-|---|---|---|
-| `mapa` | ✅ Listo | Mapa judicial + panel del estado seleccionado |
-| `evolucion` | ✅ Listo | Detalle 2009‑2024 por estado o municipio |
-| Descarga PDF | ✅ Listo | Reporte nacional, estatal o municipal |
-| Mapa municipal | ⬜ Pendiente | Mapa coloreado por municipio (GeoJSON de municipios) |
-
-### Pendientes
-
-- [ ] Pruebas unitarias en `tests/` (por ejemplo, que los municipios sumen el total de su estado).
-- [ ] Centralizar la fórmula de participación en un solo módulo.
-
 ## Guía de configuración
 
 ### 1. Clonar e instalar dependencias
