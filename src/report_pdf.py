@@ -38,15 +38,15 @@ class Infografia(FPDF):
     def section_title(self, x, y, texto):
         self.set_fill_color(*MORADO)
         self.rect(x, y + 0.6, 1.4, 4.2, style="F")
-        self.texto(x + 3.5, y, 150, texto, size=10.5, estilo="B", color=MORADO)
+        self.text(x + 3.5, y, 150, texto, size=10.5, estilo="B", color=MORADO)
 
     def footer_page(self):
         self.set_draw_color(*GRIS_SUAVE)
         self.line(MARGEN, 282, MARGEN + ANCHO, 282)
-        self.texto(MARGEN, 284, ANCHO,
+        self.text(MARGEN, 284, ANCHO,
                    "Participación = Sí votó / (Sí votó + No votó). Los no especificados no entran en el cálculo. "
                    "No incluye casillas especiales ni voto desde el extranjero.", size=6.5, color=GRIS_TEXTO)
-        self.texto(MARGEN, 288, ANCHO,
+        self.text(MARGEN, 288, ANCHO,
                    f"Fuente: INE, Conteos Censales de Participación Ciudadana · Generado el "
                    f"{date.today().strftime('%d/%m/%Y')}", size=6.5, color=GRIS_TEXTO)
 
@@ -54,9 +54,9 @@ class Infografia(FPDF):
 def header(pdf, datos):
     pdf.set_fill_color(*MORADO)
     pdf.rect(0, 0, 210, 34, style="F")
-    pdf.texto(MARGEN, 8, ANCHO, datos["titulo"], size=19, estilo="B", color=BLANCO)
-    pdf.texto(MARGEN, 18.5, ANCHO, datos["subtitulo"], size=10.5, color=LILA)
-    pdf.texto(MARGEN, 25.5, ANCHO, f"Reporte {datos['nivel'].lower()} · Conteos censales 2009-2024",
+    pdf.text(MARGEN, 8, ANCHO, datos["titulo"], size=19, estilo="B", color=BLANCO)
+    pdf.text(MARGEN, 18.5, ANCHO, datos["subtitulo"], size=10.5, color=LILA)
+    pdf.text(MARGEN, 25.5, ANCHO, f"Reporte {datos['nivel'].lower()} · Conteos censales 2009-2024",
               size=8, color=LILA)
 
 
@@ -66,10 +66,10 @@ def cards(pdf, y, kpis):
     w = (ANCHO - hueco * (n - 1)) / n
     for i, (etiqueta, valor, nota) in enumerate(kpis):
         x = MARGEN + i * (w + hueco)
-        pdf.caja(x, y, w, 26, MORADO_CLARO)
-        pdf.texto(x + 4, y + 3.5, w - 8, etiqueta.upper(), size=7, estilo="B", color=MORADO_MEDIO)
-        pdf.texto(x + 4, y + 9.5, w - 8, valor, size=17 if len(valor) < 10 else 14, estilo="B", color=MORADO)
-        pdf.texto(x + 4, y + 19.5, w - 8, nota, size=7, color=GRIS_TEXTO)
+        pdf.box(x, y, w, 26, MORADO_CLARO)
+        pdf.text(x + 4, y + 3.5, w - 8, etiqueta.upper(), size=7, estilo="B", color=MORADO_MEDIO)
+        pdf.text(x + 4, y + 9.5, w - 8, valor, size=17 if len(valor) < 10 else 14, estilo="B", color=MORADO)
+        pdf.text(x + 4, y + 19.5, w - 8, nota, size=7, color=GRIS_TEXTO)
 
 
 def line_graph(pdf, x, y, w, h, serie, ref_serie, etiqueta, ref_etiqueta, anio):
@@ -95,11 +95,11 @@ def line_graph(pdf, x, y, w, h, serie, ref_serie, etiqueta, ref_etiqueta, anio):
     for k in range(4):
         v = vmin + (vmax - vmin) * k / 3
         pdf.line(izq, py(v), izq + ancho_util, py(v))
-        pdf.texto(x, py(v) - 1.5, 9, f"{v:.0f}%", size=6.5, color=GRIS_TEXTO, align="R")
+        pdf.text(x, py(v) - 1.5, 9, f"{v:.0f}%", size=6.5, color=GRIS_TEXTO, align="R")
 
     # Años debajo
     for i, a in enumerate(anios):
-        pdf.texto(px(i) - 6, abajo + 2, 12, a, size=7, estilo="B" if a == anio else "",
+        pdf.text(px(i) - 6, abajo + 2, 12, a, size=7, estilo="B" if a == anio else "",
                   color=MORADO if a == anio else GRIS_TEXTO, align="C")
 
     # Referencia: gris punteada
@@ -123,14 +123,14 @@ def line_graph(pdf, x, y, w, h, serie, ref_serie, etiqueta, ref_etiqueta, anio):
         r = 1.9 if a == anio else 1.3
         pdf.set_fill_color(*(MORADO if a == anio else BLANCO))
         pdf.ellipse(cx - r, cy - r, 2 * r, 2 * r, style="FD")
-        pdf.texto(cx - 8, cy - 6.2, 16, pct(v), size=7, estilo="B" if a == anio else "",
+        pdf.text(cx - 8, cy - 6.2, 16, pct(v), size=7, estilo="B" if a == anio else "",
                   color=MORADO if a == anio else GRIS_TEXTO, align="C")
 
     # Leyenda
     pdf.set_draw_color(*MORADO)
     pdf.set_line_width(1)
     pdf.line(izq, y + 2, izq + 6, y + 2)
-    pdf.texto(izq + 7.5, y + 0.4, 60, etiqueta, size=7.5, estilo="B", color=MORADO)
+    pdf.text(izq + 7.5, y + 0.4, 60, etiqueta, size=7.5, estilo="B", color=MORADO)
     if ref_serie is not None:
         x2 = izq + 10 + pdf.get_string_width(clean_characters(etiqueta)) + 6
         pdf.set_draw_color(150, 150, 160)
@@ -138,22 +138,22 @@ def line_graph(pdf, x, y, w, h, serie, ref_serie, etiqueta, ref_etiqueta, anio):
         pdf.set_dash_pattern(dash=1.2, gap=1.2)
         pdf.line(x2, y + 2, x2 + 6, y + 2)
         pdf.set_dash_pattern()
-        pdf.texto(x2 + 7.5, y + 0.4, 60, ref_etiqueta, size=7.5, color=GRIS_TEXTO)
+        pdf.text(x2 + 7.5, y + 0.4, 60, ref_etiqueta, size=7.5, color=GRIS_TEXTO)
 
 
 def bar_block(pdf, x, y, w, titulo, filas, nota=None):
     """Bloque de barras horizontales (sexo, edad o tipo de sección)."""
-    pdf.texto(x, y, w, titulo, size=8.5, estilo="B", color=NEGRO)
+    pdf.text(x, y, w, titulo, size=8.5, estilo="B", color=NEGRO)
     y += 6
     for etiqueta, valor in filas:
-        pdf.texto(x, y, 19, etiqueta, size=7.5, color=GRIS_TEXTO)
+        pdf.text(x, y, 19, etiqueta, size=7.5, color=GRIS_TEXTO)
         riel_x, riel_w = x + 19, w - 33
-        pdf.caja(riel_x, y + 0.6, riel_w, 3, GRIS_SUAVE, radio=1.5)
-        pdf.caja(riel_x, y + 0.6, max(riel_w * valor / 100, 1.5), 3, MORADO, radio=1.5)
-        pdf.texto(riel_x + riel_w + 1, y, 13, pct(valor), size=7.5, estilo="B", color=NEGRO, align="R")
+        pdf.box(riel_x, y + 0.6, riel_w, 3, GRIS_SUAVE, radio=1.5)
+        pdf.box(riel_x, y + 0.6, max(riel_w * valor / 100, 1.5), 3, MORADO, radio=1.5)
+        pdf.text(riel_x + riel_w + 1, y, 13, pct(valor), size=7.5, estilo="B", color=NEGRO, align="R")
         y += 6.5
     if nota:
-        pdf.texto(x, y, w, nota, size=6.5, color=GRIS_TEXTO)
+        pdf.text(x, y, w, nota, size=6.5, color=GRIS_TEXTO)
 
 
 def findings_important(pdf, x, y, w, frases, alto_min=0):
@@ -161,8 +161,8 @@ def findings_important(pdf, x, y, w, frases, alto_min=0):
     pdf.set_font("Helvetica", "", 8.3)
     alturas = [pdf.multi_cell(w - 14, 4.2, clean_characters(f), dry_run=True, output="HEIGHT") for f in frases]
     alto = max(11 + sum(alturas) + 1.8 * len(frases) + 3, alto_min)
-    pdf.caja(x, y, w, alto, MORADO_CLARO)
-    pdf.texto(x + 5, y + 4, w - 10, "Lo más importante", size=10, estilo="B", color=MORADO)
+    pdf.box(x, y, w, alto, MORADO_CLARO)
+    pdf.text(x + 5, y + 4, w - 10, "Lo más importante", size=10, estilo="B", color=MORADO)
     pdf.set_y(y + 11)
     for frase in frases:
         pdf.set_fill_color(*MORADO)
@@ -179,22 +179,22 @@ def ranking(pdf, x, y, w, titulo, filas, resaltar, corte=None, separar_en=None, 
     """
     Lista con barra: nombre · barra · %. El lugar del reporte va resaltado.
     """
-    pdf.texto(x, y, w, titulo, size=8.5, estilo="B", color=NEGRO)
+    pdf.text(x, y, w, titulo, size=8.5, estilo="B", color=NEGRO)
     y0 = y
     y += 6.5
     tope = tope or (max(v for _, v in filas) if filas else 100)
     for i, (nombre, valor) in enumerate(filas):
         if separar_en is not None and i == separar_en:
-            pdf.texto(x, y - 1.2, 30, "· · ·", size=7, color=GRIS_TEXTO)
+            pdf.text(x, y - 1.2, 30, "· · ·", size=7, color=GRIS_TEXTO)
             y += 3
         es_el_lugar = nombre == resaltar
         alto = valor >= corte if corte is not None else i < len(filas) / 2
         color = MORADO if (es_el_lugar or alto) else LILA
-        pdf.texto(x, y, 30, nombre[:22], size=7, estilo="B" if es_el_lugar else "",
+        pdf.text(x, y, 30, nombre[:22], size=7, estilo="B" if es_el_lugar else "",
                   color=MORADO if es_el_lugar else GRIS_TEXTO)
         riel_x, riel_w = x + 31, w - 45
-        pdf.caja(riel_x, y + 0.7, max(riel_w * valor / tope, 1.5), 2.6, color, radio=1.3)
-        pdf.texto(riel_x + riel_w + 1, y, 13, pct(valor), size=7, estilo="B", color=NEGRO, align="R")
+        pdf.box(riel_x, y + 0.7, max(riel_w * valor / tope, 1.5), 2.6, color, radio=1.3)
+        pdf.text(riel_x + riel_w + 1, y, 13, pct(valor), size=7, estilo="B", color=NEGRO, align="R")
         y += 5.4
     return y - y0
 
@@ -209,38 +209,38 @@ def build_pdf(datos):
     cards(pdf, 40, datos["kpis"])
 
     # Evolución
-    pdf.titulo_seccion(MARGEN, 73, "Evolución de la participación 2009-2024")
+    pdf.section_title(MARGEN, 73, "Evolución de la participación 2009-2024")
     line_graph(pdf, MARGEN, 81, ANCHO, 62, datos["serie"], datos["ref_serie"],
                    datos["nombre"], datos["ref_etiqueta"], datos["anio"])
 
     # Desgloses en tres columnas
-    pdf.titulo_seccion(MARGEN, 150, f"¿Quién votó en {datos['anio']}?")
+    pdf.section_title(MARGEN, 150, f"¿Quién votó en {datos['anio']}?")
     col = (ANCHO - 8) / 3
     nota_nb = (f"No binario: {datos['no_binario_n']} personas en la lista nominal"
                if datos["no_binario_n"] else None)
     bar_block(pdf, MARGEN, 158, col, "Por sexo", datos["sexo"], nota_nb)
     bar_block(pdf, MARGEN + col + 4, 158, col, "Por edad", datos["edad"])
     bar_block(pdf, MARGEN + 2 * (col + 4), 158, col, "Por tipo de sección", datos["seccion"])
-    pdf.texto(MARGEN, 186.5, ANCHO, "Cada barra es la participación dentro de su grupo: por eso no suman 100%.",
+    pdf.text(MARGEN, 186.5, ANCHO, "Cada barra es la participación dentro de su grupo: por eso no suman 100%.",
               size=6.5, color=GRIS_TEXTO)
 
     # Hallazgos (izquierda) y ranking (derecha)
     alto_ranking = ranking(pdf, MARGEN + 110, 196, ANCHO - 110, datos["ranking_titulo"], datos["ranking"],
                             datos["resaltar"], separar_en=datos.get("separar_en"))
-    header(pdf, MARGEN, 194, 104, datos["hallazgos"], alto_min=alto_ranking + 4)
+    findings_important(pdf, MARGEN, 194, 104, datos["hallazgos"], alto_min=alto_ranking + 4)
 
-    pdf.pie_de_pagina()
+    pdf.footer_page()
 
     # Nacional: segunda hoja con los 32 estados (federal y judicial)
     if datos["ranking_completo"]:
         pdf.add_page()
         pdf.set_fill_color(*MORADO)
         pdf.rect(0, 0, 210, 20, style="F")
-        pdf.texto(MARGEN, 6.5, ANCHO, "Participación por estado", size=14, estilo="B", color=BLANCO)
+        pdf.text(MARGEN, 6.5, ANCHO, "Participación por estado", size=14, estilo="B", color=BLANCO)
 
         def dos_columnas(y, titulo, lista, promedio):
-            pdf.titulo_seccion(MARGEN, y, titulo)
-            pdf.texto(MARGEN + 3.5, y + 6, ANCHO, f"Morado: arriba del promedio nacional ({pct(promedio)}) · "
+            pdf.section_title(MARGEN, y, titulo)
+            pdf.text(MARGEN + 3.5, y + 6, ANCHO, f"Morado: arriba del promedio nacional ({pct(promedio)}) · "
                       "Lila: abajo del promedio", size=7, color=GRIS_TEXTO)
             mitad = (len(lista) + 1) // 2
             tope = max(v for _, v in lista)          # misma escala en las dos columnas
@@ -251,6 +251,6 @@ def build_pdf(datos):
 
         dos_columnas(28, f"Elección federal {datos['anio']}", datos["ranking_completo"], datos["promedio_federal"])
         dos_columnas(150, "Elección judicial 2024-2025", datos["ranking_judicial"], datos["promedio_judicial"])
-        pdf.pie_de_pagina()
+        pdf.footer_page()
 
     return bytes(pdf.output())
